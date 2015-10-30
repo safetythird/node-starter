@@ -1,0 +1,25 @@
+{
+  "name": "js-coding-challenge",
+  "version": "0.0.0",
+  "description": "JS Server for WDI code challenge",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "watchify --poll -d -o public/js/bundle.js -t stringify app.js",
+    "start": "npm run watch & nodemon -L server.js"
+  },
+  "author": "Neel Patel <neelp22@gmail.com> (https://github.com/darthneel)",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.12.0",
+    "browserify": "^12.0.1",
+    "express": "^4.12.2",
+    "jquery": "^2.1.4",
+    "lodash": "^3.10.1",
+    "qwest": "^2.2.2",
+    "stringify": "^3.1.0"
+  },
+  "devDependencies": {
+    "watchify": "^3.6.0"
+  }
+}

@@ -1,0 +1,11 @@
+<div id="search" class="container-fluid">
+    <h2>Search OMDB</h2>
+    <form id="search-form" action="#" method="get">
+        <input type="text" id="search-form-title">
+        <input type="submit">
+    </form>
+    <div id="search-results">
+        <div class="lead"><span ><% print(query && "Showing results for ") %></span><span><%= query %></span></div>
+        <%= results %>
+    </div>
+</div>
