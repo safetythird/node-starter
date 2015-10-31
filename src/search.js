@@ -1,6 +1,12 @@
+/*
+  Render the search page and handle interactions
+*/
+
 'use strict'
+
 let _ = require('lodash')
 let omdb = require('./omdb')
+let render = require('./utils').render
 let Search = require('./html/search.html')
 let Items = require('./html/items.html')
 
@@ -14,19 +20,12 @@ function formSearch (ev) {
   runSearch(q)
 }
 
-function initSearch () {
-  /*
-    Tell the form element to use formsearch() instead of its default onsubmit action
-  */
-  document.getElementById('search-form').onsubmit = formSearch
-}
-
 function renderSearch (query, rsp) {
   let results = _.template(Items)({items: rsp.Search})
   let markup = _.template(Search)({query, results})
-  document.body.innerHTML = markup
-  document.title = 'Search OMDB'
-  initSearch()
+  render(markup, 'Search OMDB')
+  document.getElementById('search-form').onsubmit = formSearch
+
 }
 
 function runSearch (q) {

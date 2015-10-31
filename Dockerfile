@@ -10,7 +10,6 @@ ENV PATH $PATH:/nodejs/bin
 
 RUN npm install -g nodemon eslint eslint-plugin-react
 
-ADD . /app
 WORKDIR /app
 EXPOSE 8080
 

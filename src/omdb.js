@@ -1,4 +1,9 @@
+/*
+  Interafct with the OMDB API
+*/
+
 'use strict'
+
 let $ = require('jquery')
 
 const omdbUrl = 'http://www.omdbapi.com'
