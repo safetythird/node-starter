@@ -5,7 +5,6 @@
 'use strict'
 
 let _ = require('lodash')
-let api = require('./api')
 let omdb = require('./omdb')
 let utils = require('./utils')
 let Search = require('./html/search.html')
