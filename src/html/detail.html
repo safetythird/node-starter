@@ -1,5 +1,10 @@
 <div id="detail" class="container-fluid">
     <h2 ><%- movie.Title %></h2>
+    <% if (currentUsername && !currentFavorites[movie.imdbID]) { %>
+    <button class="btn btn-default col-sm-2" data-imdbid="<%= movie.imdbID %>" value="add">Add to favorites</button>
+    <% } else if (currentUsername && currentFavorites[movie.imdbID]) { %>
+    <button class="btn btn-default col-sm-2" data-imdbid="<%= movie.imdbID %>" value="remove">Remove from favorites</button>
+    <% } %>
     <div class="col-md-8">
         <span class="label label-primary">Year</span><div class="lead"><%- movie.Year %></div>
         <span class="label label-primary">Rated</span><div class="lead"><%- movie.Rated %></div>

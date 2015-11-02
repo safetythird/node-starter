@@ -15,40 +15,21 @@ let responseMap = {}
 let currentUsername = utils.getCurrentUsername()
 let currentFavorites = utils.getCurrentFavorites()
 
-function addFavorite (imdbID) {
-  return function (ev) {
-    ev.preventDefault()
-    if (imdbID) {
-      api.addFavorite(responseMap[imdbID], (rsp) => {
-        console.log(rsp)
-      })
-      currentFavorites[imdbID] = 1
-      renderFavorites()
-    }
-  }
-}
-
-function deleteFavorite (imdbID) {
-  return function (ev) {
-    ev.preventDefault()
-    if (imdbID) {
-      api.deleteFavorite(imdbID, (rsp) => {
-        console.log(rsp)
-      })
-      currentFavorites[imdbID] = 0
-      renderFavorites()
-    }
-  }
-}
-
 function renderFavorites (username) {
   let results = _.template(Items)({items: response.favorites, currentUsername, currentFavorites})
-  let markup = _.template(Favorites)({username, results})
+  let markup = _.template(Favorites)({currentUsername, results})
   utils.render(markup, username + '\'s favorites')
   let buttons = document.getElementById('favorites-results').getElementsByTagName('button')
   _.map(buttons, (button) => {
-    if (button.value === 'add') button.onclick = addFavorite(button.dataset['imdbid'])
-    if (button.value === 'remove') button.onclick = deleteFavorite(button.dataset['imdbid'])
+    let imdbID = button.dataset['imdbid']
+    if (button.value === 'add') button.onclick = utils.addFavorite(imdbID, () => {
+      currentFavorites[imdbID] = 1
+      renderFavorites()
+    })
+    if (button.value === 'remove') button.onclick = utils.deleteFavorite(imdbID, () => {
+      currentFavorites[imdbID] = 0
+      renderFavorites()
+    })
   })
 }
 

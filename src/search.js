@@ -44,32 +44,6 @@ function formSearch (ev) {
   runSearch()
 }
 
-function addFavorite (imdbID) {
-  return function (ev) {
-    ev.preventDefault()
-    if (imdbID) {
-      api.addFavorite(responseMap[imdbID], (rsp) => {
-        console.log(rsp)
-      })
-      currentFavorites[imdbID] = 1
-      renderSearch()
-    }
-  }
-}
-
-function deleteFavorite (imdbID) {
-  return function (ev) {
-    ev.preventDefault()
-    if (imdbID) {
-      api.deleteFavorite(imdbID, (rsp) => {
-        console.log(rsp)
-      })
-      currentFavorites[imdbID] = 0
-      renderSearch()
-    }
-  }
-}
-
 function renderSearch () {
   let results = _.template(Items)({items: response, currentUsername, currentFavorites})
   let markup = _.template(Search)({query, results})
@@ -77,8 +51,15 @@ function renderSearch () {
   document.getElementById('search-form').onsubmit = formSearch
   let buttons = document.getElementById('search-results').getElementsByTagName('button')
   _.map(buttons, (button) => {
-    if (button.value === 'add') button.onclick = addFavorite(button.dataset['imdbid'])
-    if (button.value === 'remove') button.onclick = deleteFavorite(button.dataset['imdbid'])
+    let imdbID = button.dataset['imdbid']
+    if (button.value === 'add') button.onclick = utils.addFavorite(responseMap[imdbID], () => {
+      currentFavorites[imdbID] = 1
+      renderSearch()
+    })
+    if (button.value === 'remove') button.onclick = utils.deleteFavorite(imdbID, () => {
+      currentFavorites[imdbID] = 0
+      renderSearch()
+    })
   })
 }
 

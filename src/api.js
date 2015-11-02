@@ -18,6 +18,7 @@ module.exports = {
   },
   addFavorite (favorite, callback) {
     let data = _.pick(favorite, ['imdbID', 'Title', 'Year', 'Poster'])
+    console.log(data)
     $.ajax(apiURL + '/favorites', {method: 'POST', dataType: 'json', data}).done(callback)
   },
   getFavorites (username, callback) {
