@@ -7,6 +7,7 @@
 let _ = require('lodash')
 let render = require('./utils').render
 let api = require('./api')
+let utils = require('./utils')
 let Login = require('./html/login.html')
 
 function formLogin (ev) {
@@ -19,7 +20,7 @@ function formLogin (ev) {
   api.login(username, password, (rsp) => {
     console.log(rsp)
     if (rsp.error) {
-      renderSignup({message: rsp.error})
+      renderLogin({message: rsp.error})
     } else {
       window.location = '/'
     }
@@ -36,14 +37,14 @@ function formSignup (ev) {
   api.signup(username, password, (rsp) => {
     console.log(rsp)
     if (rsp.error) {
-      renderSignup({message: rsp.error})
+      renderLogin({message: rsp.error})
     } else {
-      renderSignup({message: 'Created ' + rsp.created})
+      renderLogin({message: 'Created ' + rsp.created})
     }
   })
 }
 
-function renderSignup (data) {
+function renderLogin (data) {
   let markup = _.template(Login)(data)
   render(markup, 'Login or Sign Up')
   document.getElementById('login-form').onsubmit = formLogin
@@ -51,5 +52,8 @@ function renderSignup (data) {
 }
 
 module.exports = function () {
-  renderSignup({message: null})
+  if (utils.getCurrentUsername()) {
+    window.location = '/'
+  }
+  renderLogin({message: null})
 }

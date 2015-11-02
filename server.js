@@ -85,9 +85,8 @@ app.post('/api/login', (req, res) => {
       // Log the user in
       req.session.username = username
       db.getFavoriteIds(username, (err, favorites) => {
-        console.log(favorites)
         req.session.favorites = favorites
-        return {username, favorites}
+        return res.send({username, favorites})
       })
     })
   }
