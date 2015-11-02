@@ -2,10 +2,19 @@
 
 Hi, GA.
 
+A small but non-trivial Node web app. This was made for a coding challenge, and part of the challenge was not to use a framework, so all of the dynamic content uses plain Javascript.
+
+The client side app lives in `app.js` and `src/`. The server code is in `server.js`, and the Redis API layer in `redisdb.js`. There's also a `db.js` that doesn't work because one of its dependencies is broken, but I left it there as a curiosity.
+
 ## Local development
 
-For local develoment, the app runs inside a Docker container. To build and start the container, simply run `make`.
+For local develoment, the app runs inside a Docker container. To start everyting, use `docker-compose up`. Or, start the components separately so you can restart the app container without affecting the cache container:
 
-Before pushing changes, please run `make test`.
+  docker-compose up redis
+  docker-compose up app
 
-I loosely follow the npm style guide, so if you're going to hack on this, kindly avail yourself of [its wisdom](https://docs.npmjs.com/misc/coding-style). Loosely because I think leading commas look dumb.
+Other interesting commands include:
+
+  make lint
+  make test
+
