@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "watchify --poll -d -o public/js/bundle.js -t stringify app.js",
-    "start": "npm run watch & nodemon -L server.js"
+    "browserify": "browserify -o public/js/bundle.js -t stringify app.js",
+    "dev": "npm run watch & nodemon -L server.js",
+    "start": "npm run browserify && nodemon server.js"
   },
   "author": "Neel Patel <neelp22@gmail.com> (https://github.com/darthneel)",
   "license": "ISC",

@@ -10,7 +10,6 @@ let login = require('./src/login')
 let favorites = require('./src/favorites')
 
 const searchRegex = /^\/$/
-const hashregex = /^#(.+)/
 const detailRegex = /^\/detail\/([a-z0-9]+)\/?$/
 const loginRegex = /^\/login\/?$/
 const favoritesRegex = /^\/favorites\/([a-zA-Z0-9]+)$/
@@ -19,9 +18,7 @@ function init () {
   let route = window.location.pathname
   if (searchRegex.test(route)) {
     // Search page
-    // Initialize the search page based on the hash. Only do this once per page load
-    let q = hashregex.exec(window.location.hash)
-    search(q && q[1])
+    search()
   } else if (detailRegex.test(route)) {
     // Detail page
     let id = detailRegex.exec(route)[1]

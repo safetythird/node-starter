@@ -1,13 +1,32 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>node-backend-starter</title>
+    <title>node-starter</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
   </head>
   <body>
+    <nav id="navbar" class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">node-starter</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="<% print(page === 'search' && 'active') %>"><a href="/">Search</a></li>
+            <% if (username) {%>
+            <li class="<% print(page === 'favorites' && 'active') %>"><a href="favorites/<%= username %>">Favorites</a></li>
+            <%}%>
+          </ul>
+          <% if (username) {%>
+          <p class="navbar-text navbar-right">You are <strong><%= username %></strong>. <a href="logout">Logout</a></span>
+          <%} else {%>
+          <p class="navbar-text navbar-right"><a href="login">Login</a></span>
+          <%}%>
+        </div>
+      </div>
+    </nav>
     <div id="content"></div>
+    <script id="user-data" data-username="<%= username %>" data-favorites="<%= favorites %>"></script>
     <script src="/static/js/bundle.js"></script>
-    <script id="username-data" data-username="<%= username %>"></script>
-    <script id="favorites-data" data-favorites="<%= favorites %>"></script>
   </body>
 </html>

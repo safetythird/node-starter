@@ -21,7 +21,6 @@ function formLogin (ev) {
     if (rsp.error) {
       renderSignup({message: rsp.error})
     } else {
-      // Navigate to the home page on successful login
       window.location = '/'
     }
   })
@@ -39,7 +38,7 @@ function formSignup (ev) {
     if (rsp.error) {
       renderSignup({message: rsp.error})
     } else {
-      renderSignup({message: "Created " + rsp.created})
+      renderSignup({message: 'Created ' + rsp.created})
     }
   })
 }

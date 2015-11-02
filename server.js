@@ -12,7 +12,7 @@ let _ = require('lodash')
 // let db = require('./db')('/var/run/sqlite3')
 let db = require('./redisdb')
 let session = require('express-session')
-var RedisStore = require('connect-redis')(session);
+var RedisStore = require('connect-redis')(session)
 
 let app = express()
 
@@ -24,13 +24,13 @@ let app = express()
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(session({
-    store: new RedisStore({
-      host: 'redis'
-    }),
-    secret: 'feature creep',
-    resave: true,
-    saveUninitialized: true
-}));
+  store: new RedisStore({
+    host: 'redis'
+  }),
+  secret: 'feature creep',
+  resave: true,
+  saveUninitialized: true
+}))
 app.use('/static', express.static(path.join(__dirname, 'public')))
 
 
@@ -40,20 +40,28 @@ app.use('/static', express.static(path.join(__dirname, 'public')))
 
 const indexTemplate = _.template(fs.readFileSync(path.join(__dirname, 'src/html/index.html')))
 
-function serveIndex (req, res) {
-  let username = req.session.username || ''
-  let favorites = req.session.favorites || []
-  return res.send(indexTemplate({username, favorites}))
+function serveIndex (page) {
+  return function (req, res) {
+    let username = req.session.username
+    let favorites = req.session.favorites
+    console.log(`username: ${username}, favorites: ${favorites}`)
+    return res.send(indexTemplate({username, favorites, page}))
+  }
 }
 
-app.get('/', serveIndex)
+app.get('/', serveIndex('search'))
 
-app.get('/login', serveIndex)
+app.get('/login', serveIndex('login'))
 
-app.get('/detail/:id', serveIndex)
+app.get('/detail/:id', serveIndex('detail'))
 
-app.get('/favorites/:username', serveIndex)
+app.get('/favorites/:username', serveIndex('favorites'))
 
+app.get('/logout', (req, res) => {
+  req.session.username = null
+  req.session.favorites = null
+  return res.redirect('/')
+})
 
 /*
   Endpoints that serve the API for interacting with the database
@@ -70,16 +78,17 @@ app.post('/api/login', (req, res) => {
     }
     db.validateUser(username, password, (err, valid) => {
       if (err) {
-        console.log(err)
         return res.status(500).send({error: 'Database error'})
       }
       if (!valid) return res.status(400).send({error: 'Incorrect username or password'})
+      console.log(`login: ${username}`)
       // Log the user in
       req.session.username = username
-      db.readFavorites(username, (err, favorites) => {
-        req.session.favortes = favorites
+      db.getFavoriteIds(username, (err, favorites) => {
+        console.log(favorites)
+        req.session.favorites = favorites
+        return {username, favorites}
       })
-      return res.send({status: 'Logged in'})
     })
   }
 })
@@ -90,45 +99,57 @@ app.post('/api/signup', (req, res) => {
   if (!username || !password) return res.status(400).send({error: 'Username and password are required'})
   if (!usernameRegex.test(username)) return res.status(400).send({error: 'Invalid username'})
 
-  db.createUser(username, password, (err) => {
+  db.createUser(username, password, (err, status) => {
     if (err) {
-      console.log(err)
       return res.status(500).send({error: 'Database error'})
     }
     req.session.username = username
     req.session.favorites = []
-    return res.send({status: 'created', username})
+    return res.send({status, username})
   })
 
 })
 
-app.get('/api/favorites/:username', (req, res, username) => {
-  db.readFavorites(username, (err, favorites) => {
+app.get('/api/favorites/:username', (req, res) => {
+  let username = req.params.username
+  db.getFavorites(username, (err, favorites) => {
     if (err) {
-      console.log(err)
       return res.status(500).send({error: 'Database error'})
     }
     return res.send({favorites})
   })
 })
 
+/*
+  These endpoints check whether the user is logged in.
+  If there are many endpoints like this, consider writing a middleware.
+*/
+
 app.post('/api/favorites', (req, res) => {
-  /*
-    This is the only endpoint that changes user state, so we just check here whether the user is logged in.
-    If there are multiple endpoints like this, consider writing a middleware.
-  */
   let body = req.body
   let username = req.session.username
   if (!username) return res.status(401).send({error: 'Must be logged in'})
   if (!body.imdbID || !body.Title || !body.Year || !body.Poster) {
     return res.status(400).send({error: 'Bad request body'})
   }
-  db.createFavorite(body.username, body.imdbID, body.Title, body.Year, body.Poster, (err, status) => {
-    if (err) {
-      console.log(err)
-      return res.status(500).send({error: 'Database error'})
-    }
-    return res.send({status})
+  db.createFavorite(username, body.imdbID, body.Title, body.Year, body.Poster, (err, favorites) => {
+    if (err) return res.status(500).send({error: 'Database error'})
+    req.session.favorites = favorites
+    return res.send({favorites})
+  })
+})
+
+app.delete('/api/favorites', (req, res) => {
+  let body = req.body
+  let username = req.session.username
+  if (!username) return res.status(401).send({error: 'Must be logged in'})
+  if (!body.imdbID) {
+    return res.status(400).send({error: 'Bad request body'})
+  }
+  db.deleteFavorite(username, body.imdbID, (err, favorites) => {
+    if (err) return res.status(500).send({error: 'Database error'})
+    req.session.favorites = favorites
+    return res.send({favorites})
   })
 })
 

@@ -50,7 +50,7 @@ module.exports = function (path) {
     readFavorites (username, callback) {
       favoriteSelect.run(username, callback)
     },
-    deleteFavorite (imdbID, username, callback) {
+    deleteFavorite (username, imdbID, callback) {
       favoriteDelete.run([imdbID, username], callback)
     }
   }
