@@ -14,11 +14,11 @@ The client side app lives in `app.js` and `src/`. The server code is in `server.
 
 For local develoment, the app runs inside a Docker container. To start everyting, use `docker-compose up`. Or, start the components separately so you can restart the app container without affecting the cache container:
 
-  docker-compose up redis
-  docker-compose up app
+    docker-compose up redis
+    docker-compose up app
 
 Other interesting commands include:
 
-  make lint
-  make test
+    make lint
+    make test
 
