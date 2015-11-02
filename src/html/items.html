@@ -4,9 +4,9 @@
             <div class="col-md-4"><%- i.Title %></div>
             <div class="col-md-2"><%- i.Year %></div>
             <div class="col-md-2"><img src="<%= i.Poster %>"></div>
-            <% if (username && !currentFavorites[i.imdbID]) { %>
+            <% if (currentUsername && !currentFavorites[i.imdbID]) { %>
             <button class="btn btn-default col-sm-2" data-imdbid="<%= i.imdbID %>" value="add">Add to favorites</button>
-            <% } else if (username && currentFavorites[i.imdbID]) { %>
+            <% } else if (currentUsername && currentFavorites[i.imdbID]) { %>
             <button class="btn btn-default col-sm-2" data-imdbid="<%= i.imdbID %>" value="remove">Remove from favorites</button>
             <% } %>
         </div>

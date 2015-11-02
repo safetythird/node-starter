@@ -12,6 +12,7 @@ let Items = require('./html/items.html')
 
 let response = []
 let responseMap = {}
+let currentUsername = utils.getCurrentUsername()
 let currentFavorites = utils.getCurrentFavorites()
 
 function addFavorite (imdbID) {
@@ -41,7 +42,7 @@ function deleteFavorite (imdbID) {
 }
 
 function renderFavorites (username) {
-  let results = _.template(Items)({items: response.favorites, username, currentFavorites})
+  let results = _.template(Items)({items: response.favorites, currentUsername, currentFavorites})
   let markup = _.template(Favorites)({username, results})
   utils.render(markup, username + '\'s favorites')
   let buttons = document.getElementById('favorites-results').getElementsByTagName('button')

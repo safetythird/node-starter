@@ -16,7 +16,7 @@ const hashregex = /^#(.+)/
 let query = ''
 let response = []
 let responseMap = {}
-let username = utils.getCurrentUsername()
+let currentUsername = utils.getCurrentUsername()
 let currentFavorites = utils.getCurrentFavorites()
 
 function runSearch () {
@@ -71,7 +71,7 @@ function deleteFavorite (imdbID) {
 }
 
 function renderSearch () {
-  let results = _.template(Items)({items: response, username, currentFavorites})
+  let results = _.template(Items)({items: response, currentUsername, currentFavorites})
   let markup = _.template(Search)({query, results})
   utils.render(markup, 'Search OMDB')
   document.getElementById('search-form').onsubmit = formSearch
