@@ -9,12 +9,7 @@ let _ = require('lodash')
 let redis = require('redis')
 let bcrypt = require('bcryptjs')
 
-// Assumed to be running in docker-compose with a link called 'redis'
-const client = redis.createClient({host: 'redis'})
-
-client.on('error', (err) => {
-  console.log(`Redis error: ${err}`)
-})
+let client
 
 // Store user info and user favorites as separate hashes (no nested hashes in Redis)
 const user_hkey = (username) => `users.${username}`
@@ -93,5 +88,10 @@ function deleteFavorite (username, imdbID, callback) {
   })
 }
 
-
-module.exports = {createUser, validateUser, createFavorite, getFavorites, getFavoriteIds, deleteFavorite}
+module.exports = function (config) {
+  client = redis.createClient({host: config.redisHost})
+  client.on('error', (err) => {
+    console.log(`Redis error: ${err}`)
+  })
+  return {createUser, validateUser, createFavorite, getFavorites, getFavoriteIds, deleteFavorite}
+}

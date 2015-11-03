@@ -9,11 +9,15 @@ let path = require('path')
 let bodyParser = require('body-parser')
 let fs = require('fs')
 let _ = require('lodash')
-// let db = require('./db')('/var/run/sqlite3')
-let db = require('./redisdb')
 let session = require('express-session')
 var RedisStore = require('connect-redis')(session)
 
+// Load configuration
+let configFile = fs.readFileSync(path.join(__dirname, 'config.json'), {encoding: 'utf8'})
+const config = JSON.parse(configFile)
+
+// Initialize
+let db = require('./redisdb')(config)
 let app = express()
 
 
