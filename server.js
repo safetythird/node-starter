@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(session({
   store: new RedisStore({
-    host: 'redis'
+    host: config.redisHost
   }),
   secret: 'feature creep',
   resave: true,
