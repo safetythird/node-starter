@@ -14,7 +14,7 @@
           <ul class="nav navbar-nav">
             <li class="<% print(page === 'search' && 'active') %>"><a href="/">Search</a></li>
             <% if (username) {%>
-            <li class="<% print(page === 'favorites' && 'active') %>"><a href="favorites/<%= username %>">Favorites</a></li>
+            <li class="<% print(page === 'favorites' && 'active') %>"><a href="/favorites/<%= username %>">Favorites</a></li>
             <%}%>
           </ul>
           <% if (username) {%>
