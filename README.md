@@ -4,7 +4,7 @@ A small but non-trivial Node web app. This was made for a coding challenge, and 
 
 My intent here was to use the "good parts" of Javascript, and I lean heavily on many ES6 features. I use a functional style where possible, with a healthy amount of Lodash. 
 
-Styling the web app was my last priority, so I just used Bootstrap to make it look a few steps better than Geocities ca. 1997.
+Styling the web app was my last priority, so I just used Bootstrap to make it look a few steps better than Geocities ca. 1997. Unfortunately, it doesn’t display images because IMDB denies referrals from non-IMDB sites, and caching them would require an S3 bucket and CloudFront.
 
 The client side app lives in `app.js` and `src/`. The server code is in `server.js`, and the Redis interface in `redisdb.js`. There's also a `db.js` that doesn't work because one of its dependencies is broken, but I left it there to remind myself to revisit it later.
 
@@ -19,4 +19,3 @@ Other interesting commands include:
 
     make lint
     make test
-
