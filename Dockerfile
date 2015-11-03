@@ -9,8 +9,9 @@ RUN apt-get install -y nodejs
 ENV PATH $PATH:/nodejs/bin
 
 RUN npm install -g nodemon eslint eslint-plugin-react
+RUN mkdir -p public/js
 
 WORKDIR /app
-EXPOSE 8080
+EXPOSE 80
 
 CMD ["npm", "run", "dev"]

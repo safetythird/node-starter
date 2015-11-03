@@ -161,6 +161,6 @@ app.delete('/api/favorites', (req, res) => {
   Start the app
 */
 
-app.listen(8080, () => {
-  console.log('Listening on port 8080')
+app.listen(config.port, () => {
+  console.log('Listening on port ' + config.port)
 })
