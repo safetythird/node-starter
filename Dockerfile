@@ -12,6 +12,6 @@ RUN npm install -g nodemon eslint eslint-plugin-react
 RUN mkdir -p public/js
 
 WORKDIR /app
-EXPOSE 80
+EXPOSE 8080
 
 CMD ["npm", "run", "dev"]
