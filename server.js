@@ -48,7 +48,6 @@ function serveIndex (page) {
   return function (req, res) {
     let username = req.session.username
     let favorites = req.session.favorites
-    console.log(`username: ${username}, favorites: ${favorites}`)
     return res.send(indexTemplate({username, favorites, page}))
   }
 }

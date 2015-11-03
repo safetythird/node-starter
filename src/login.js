@@ -39,7 +39,7 @@ function formSignup (ev) {
     if (rsp.error) {
       renderLogin({message: rsp.error})
     } else {
-      renderLogin({message: 'Created ' + rsp.created})
+      window.location = '/'
     }
   })
 }
